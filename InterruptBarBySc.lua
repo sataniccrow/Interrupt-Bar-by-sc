@@ -8,7 +8,7 @@ local order
 local band = bit.band
 local fontSize = 22
 
-local spellids = {[6552] = 10, [2139] = 24, [19647] = 24, [16979] = 15, [1766] = 10, [47528] = 10, [47476] = 120, [80965] = 10, [96231] = 10}
+local spellids = {[6552] = 10, [2139] = 24, [19647] = 24, [1766] = 10, [47528] = 10, [47476] = 120, [80965] = 10, [96231] = 10, [15487] = 45, [64044] = 120, [57994] = 5, [34490] = 20}
 for spellid,time in pairs(spellids) do
 	local name,_,spellicon = GetSpellInfo(spellid)	
 	abilities[name] = { icon = spellicon, duration = time }
@@ -20,17 +20,21 @@ end
 -- 6552  Pummel
 -- 2139  Counterspell
 -- 19647 Spell Lock
--- 16979 Feral Charge 
 -- 1766  Kick
 -- 47528 Mind Freeze
+-- 96231 Rebuke
+-- 80965 Skull Bash (cat)
+-- 80964 Skull Bash (bear)
 
 -- new --
 -- 47476 Strangulate
--- preti silence
--- ams
+-- 15487 Silence
+-- 57994 Wind Shear
+-- 64044 horror
+-- 34490 Silencing Shot
 -----------------------------------------------------
 
-local order = {6552, 2139, 19647, 1766, 47528, 47476, 16979, 80965, 96231}
+local order = {6552, 1766 ,80965, 96231, 47528, 57994, 47476, 2139, 19647,15487 ,64044, 34490 }
 
 -----------------------------------------------------
 -----------------------------------------------------
