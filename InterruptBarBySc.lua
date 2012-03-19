@@ -8,7 +8,7 @@ local order
 local band = bit.band
 local fontSize = 22
 
-local spellids = {[6552] = 10, [2139] = 24, [19647] = 24, [1766] = 10, [47528] = 10, [47476] = 120, [80965] = 10, [96231] = 10, [15487] = 45, [64044] = 120, [57994] = 5, [34490] = 20}
+local spellids = {[6552] = 10, [2139] = 24, [19647] = 24, [1766] = 10, [47528] = 10, [47476] = 120, [80965] = 10, [96231] = 10, [15487] = 45, [64044] = 120, [57994] = 5, [34490] = 20, [60192] = 30, [19503] = 30}
 for spellid,time in pairs(spellids) do
 	local name,_,spellicon = GetSpellInfo(spellid)	
 	abilities[name] = { icon = spellicon, duration = time }
@@ -32,9 +32,11 @@ end
 -- 57994 Wind Shear
 -- 64044 horror
 -- 34490 Silencing Shot
+-- 60192 Freezing Trap
+-- 19503 Scatter Shot
 -----------------------------------------------------
 
-local order = {6552, 1766 ,80965, 96231, 47528, 57994, 47476, 2139, 19647,15487 ,64044, 34490 }
+local order = {6552, 1766 ,80965, 96231, 47528, 57994, 47476, 2139, 19647,15487 ,64044, 34490, 60192, 19503 }
 
 -----------------------------------------------------
 -----------------------------------------------------
@@ -241,6 +243,7 @@ local function InterruptBar_COMBAT_LOG_EVENT_UNFILTERED(...)
 		end
 		useSecondDuration = false
 		if spellID == 49376 then spellID = 16979; useSecondDuration = true end -- Feral Charge - Cat -> Feral Charge - Bear
+		if spellID  == 1499 then spellID = 60192; end -- Freezing trap -> Freezing trap Launcher
 		ability = GetSpellInfo(spellID)
 		if abilities[ability] then			
 			if useSecondDuration and spellID == 16979 then
