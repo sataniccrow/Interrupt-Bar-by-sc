@@ -244,6 +244,8 @@ local function InterruptBar_COMBAT_LOG_EVENT_UNFILTERED(...)
 		useSecondDuration = false
 		if spellID == 49376 then spellID = 16979; useSecondDuration = true end -- Feral Charge - Cat -> Feral Charge - Bear
 		if spellID  == 1499 then spellID = 60192; end -- Freezing trap -> Freezing trap Launcher
+		if spellID  == 13809 then spellID = 60192; end -- Ice trap -> Freezing trap Launcher
+		if spellID  == 82941 then spellID = 60192; end -- Ice trap Launcher -> Freezing trap Launcher
 		ability = GetSpellInfo(spellID)
 		if abilities[ability] then			
 			if useSecondDuration and spellID == 16979 then
