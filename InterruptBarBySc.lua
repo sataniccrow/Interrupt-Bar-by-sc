@@ -149,7 +149,7 @@ end
 
 local function InterruptBar_UpdateItemsPerLine()
 	InterruptBar_AddIcons()
-	ChatFrame1:AddMessage("Interruptbar - remember to reload the UI after changing the number of items per line",0,1,0) 
+	ChatFrame1:AddMessage("Interruptbar - remember to reload the UI after changing the number of items per line",255,0,0) 
 end
 
 local function InterruptBar_CreateBar()
@@ -303,13 +303,13 @@ function InterruptBar_Command(cmd)
   	local s = tonumber(cmdtbl[2])
   	cb(s)
   else
-  	ChatFrame1:AddMessage("InterruptBar Options | /ibsc <option>",0,1,0) 
-  	ChatFrame1:AddMessage("-- scale <number> | value: " .. InterruptBarByScDB.scale,0,1,0)
-	ChatFrame1:AddMessage("-- itemPerLine <integer> | value: " .. InterruptBarByScDB.itemPerLine,0,1,0)
-  	ChatFrame1:AddMessage("-- hidden (toggle) | value: " .. tostring(InterruptBarByScDB.hidden),0,1,0)
-  	ChatFrame1:AddMessage("-- lock (toggle) | value: " .. tostring(InterruptBarByScDB.lock),0,1,0)
-  	ChatFrame1:AddMessage("-- test (execute)",0,1,0)
-  	ChatFrame1:AddMessage("-- reset (execute)",0,1,0)
+  	ChatFrame1:AddMessage("InterruptBar Options | /ibsc <option>",255,0,0) 
+  	ChatFrame1:AddMessage("-- scale <number> | value: " .. InterruptBarByScDB.scale,255,255,255)
+	ChatFrame1:AddMessage("-- itemPerLine <integer> | value: " .. InterruptBarByScDB.itemPerLine,255,255,255)
+  	ChatFrame1:AddMessage("-- hidden (toggle) | value: " .. tostring(InterruptBarByScDB.hidden),255,255,255)
+  	ChatFrame1:AddMessage("-- lock (toggle) | value: " .. tostring(InterruptBarByScDB.lock),255,255,255)
+  	ChatFrame1:AddMessage("-- test (execute)",255,255,255)
+  	ChatFrame1:AddMessage("-- reset (execute)",255,255,255)
   end
 end
 
@@ -324,7 +324,7 @@ local function InterruptBar_OnLoad(self)
 	SlashCmdList["InterruptBarBySc"] = InterruptBar_Command
 	SLASH_InterruptBarBySc1 = "/ibsc"
 	
-	ChatFrame1:AddMessage("Interrupt Bar by Kollektiv mod By Satanic Crow. Type /ibsc for options.",0,1,0)
+	ChatFrame1:AddMessage("Interrupt Bar by Kollektiv modified By Satanic Crow. Type /ibsc for options.",255,0,0)
 end
 
 local eventhandler = {
