@@ -1,0 +1,14 @@
+This is a modified version of the popular addon knowns as "Interrupt Bar" made by the also well known Kollective.
+I've added a little refactoring (I'm planning to work a little bit more on that) and some more spells, which a pvper will be glad to be able to check.
+Now it's even possible to select the number of items per line by using a cmd shortcut
+
+This addon is completly compatible with the original versione and it WILL NOT OVERWRITE your personal settings
+
+Command shortcuts:
+/ibsc  -- show options
+/ibsc scale -- scale the interface
+/ibsc itemPerLine -- set the number of spells'frame per line -- IT NEEDS A RELOAD to be fully effective
+/ibsc lock -- lock/unlock the addon's frame
+/ibsc hidden -- hide/show the addon
+/ibsc test -- test the addon
+/ibsc reset -- reset the default values
