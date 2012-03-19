@@ -2,7 +2,7 @@
 -- Interrupt Bar by Kollektiv
 ----------------------------------------------------
 
-InterruptBarDB = InterruptBarDB or { scale = 1, hidden = false, lock = false, itemPerLine = 4}
+InterruptBarByScDB = InterruptBarByScDB or { scale = 1, hidden = false, lock = false, itemPerLine = 4}
 local abilities = {}
 local order
 local band = bit.band
@@ -65,14 +65,12 @@ local function InterruptBar_AddIcons()
 	local lineCounter = 0
 	
 	for index,ability in ipairs(order) do
-		if lineCounter+1 > InterruptBarDB.itemPerLine then
+		if lineCounter+1 > InterruptBarByScDB.itemPerLine then
 		lineCounter = 0
 		x = -45
 		end
 		
-		local level = floor( (index-1) / InterruptBarDB.itemPerLine)
-		
-		print ("Index: ", index, " x value: ", x, " y value: ", level*-30, " line counter: ", lineCounter," level: ", level)
+		local level = floor( (index-1) / InterruptBarByScDB.itemPerLine)
 		
 		local btn = CreateFrame("Frame",nil,bar)
 		btn:SetWidth(30)
@@ -112,31 +110,31 @@ end
 
 local function InterruptBar_SavePosition()
 	local point, _, relativePoint, xOfs, yOfs = bar:GetPoint()
-	if not InterruptBarDB.Position then 
-		InterruptBarDB.Position = {}
+	if not InterruptBarByScDB.Position then 
+		InterruptBarByScDB.Position = {}
 	end
-	InterruptBarDB.Position.point = point
-	InterruptBarDB.Position.relativePoint = relativePoint
-	InterruptBarDB.Position.xOfs = xOfs
-	InterruptBarDB.Position.yOfs = yOfs
+	InterruptBarByScDB.Position.point = point
+	InterruptBarByScDB.Position.relativePoint = relativePoint
+	InterruptBarByScDB.Position.xOfs = xOfs
+	InterruptBarByScDB.Position.yOfs = yOfs
 end
 
 local function InterruptBar_LoadPosition()
-	if InterruptBarDB.Position then
-		bar:SetPoint(InterruptBarDB.Position.point,UIParent,InterruptBarDB.Position.relativePoint,InterruptBarDB.Position.xOfs,InterruptBarDB.Position.yOfs)
+	if InterruptBarByScDB.Position then
+		bar:SetPoint(InterruptBarByScDB.Position.point,UIParent,InterruptBarByScDB.Position.relativePoint,InterruptBarByScDB.Position.xOfs,InterruptBarByScDB.Position.yOfs)
 	else
 		bar:SetPoint("CENTER", UIParent, "CENTER")
 	end
 end
 
 local function InterruptBar_UpdateBar()
-	bar:SetScale(InterruptBarDB.scale)
-	if InterruptBarDB.hidden then
+	bar:SetScale(InterruptBarByScDB.scale)
+	if InterruptBarByScDB.hidden then
 		for _,v in ipairs(order) do bar[v]:Hide() end
 	else
 		for _,v in ipairs(order) do bar[v]:Show() end
 	end
-	if InterruptBarDB.lock then
+	if InterruptBarByScDB.lock then
 		bar:EnableMouse(false)
 	else
 		bar:EnableMouse(true)
@@ -190,7 +188,7 @@ local function InterruptBar_UpdateText(text,cooldown)
 end
 
 local function InterruptBar_StopAbility(ref,ability)
-	if InterruptBarDB.hidden then ref:Hide() end
+	if InterruptBarByScDB.hidden then ref:Hide() end
 	if activetimers[ability] then activetimers[ability] = nil end
 	ref.text:SetText("")
 	ref.cd:Hide()
@@ -215,7 +213,7 @@ local function InterruptBar_OnUpdate(self, elapsed)
 end
 
 local function InterruptBar_StartTimer(ref,ability)
-	if InterruptBarDB.hidden then
+	if InterruptBarByScDB.hidden then
 		ref:Show()
 	end
 	if not activetimers[ability] then
@@ -265,7 +263,7 @@ local function InterruptBar_PLAYER_ENTERING_WORLD(self)
 end
 
 local function InterruptBar_Reset()
-	InterruptBarDB = { scale = 1, hidden = false, lock = false, itemPerLine = 4}
+	InterruptBarByScDB = { scale = 1, hidden = false, lock = false, itemPerLine = 4}
 	InterruptBar_UpdateBar()
 	InterruptBar_LoadPosition()
 end
@@ -277,10 +275,10 @@ local function InterruptBar_Test()
 end
 
 local cmdfuncs = {
-	scale = function(v) InterruptBarDB.scale = v; InterruptBar_UpdateBar() end,
-	hidden = function() InterruptBarDB.hidden = not InterruptBarDB.hidden; InterruptBar_UpdateBar() end,
-	itemPerLine = function(v)  InterruptBarDB.itemPerLine = v; InterruptBar_UpdateItemsPerLine() end,
-	lock = function() InterruptBarDB.lock = not InterruptBarDB.lock; InterruptBar_UpdateBar() end,
+	scale = function(v) InterruptBarByScDB.scale = v; InterruptBar_UpdateBar() end,
+	hidden = function() InterruptBarByScDB.hidden = not InterruptBarByScDB.hidden; InterruptBar_UpdateBar() end,
+	itemPerLine = function(v)  InterruptBarByScDB.itemPerLine = v; InterruptBar_UpdateItemsPerLine() end,
+	lock = function() InterruptBarByScDB.lock = not InterruptBarByScDB.lock; InterruptBar_UpdateBar() end,
 	reset = function() InterruptBar_Reset() end,
 	test = function() InterruptBar_Test() end,
 }
@@ -298,11 +296,11 @@ function InterruptBar_Command(cmd)
   	local s = tonumber(cmdtbl[2])
   	cb(s)
   else
-  	ChatFrame1:AddMessage("InterruptBar Options | /ib <option>",0,1,0)  	
-  	ChatFrame1:AddMessage("-- scale <number> | value: " .. InterruptBarDB.scale,0,1,0)
-	ChatFrame1:AddMessage("-- itemPerLine <integer> | value: " .. InterruptBarDB.itemPerLine,0,1,0)
-  	ChatFrame1:AddMessage("-- hidden (toggle) | value: " .. tostring(InterruptBarDB.hidden),0,1,0)
-  	ChatFrame1:AddMessage("-- lock (toggle) | value: " .. tostring(InterruptBarDB.lock),0,1,0)
+  	ChatFrame1:AddMessage("InterruptBar Options | /ibsc <option>",0,1,0) 
+  	ChatFrame1:AddMessage("-- scale <number> | value: " .. InterruptBarByScDB.scale,0,1,0)
+	ChatFrame1:AddMessage("-- itemPerLine <integer> | value: " .. InterruptBarByScDB.itemPerLine,0,1,0)
+  	ChatFrame1:AddMessage("-- hidden (toggle) | value: " .. tostring(InterruptBarByScDB.hidden),0,1,0)
+  	ChatFrame1:AddMessage("-- lock (toggle) | value: " .. tostring(InterruptBarByScDB.lock),0,1,0)
   	ChatFrame1:AddMessage("-- test (execute)",0,1,0)
   	ChatFrame1:AddMessage("-- reset (execute)",0,1,0)
   end
@@ -311,15 +309,15 @@ end
 local function InterruptBar_OnLoad(self)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	if not InterruptBarDB.scale then InterruptBarDB.scale = 1 end
-	if not InterruptBarDB.hidden then InterruptBarDB.hidden = false end
-	if not InterruptBarDB.lock then InterruptBarDB.lock = false end
+	if not InterruptBarByScDB.scale then InterruptBarByScDB.scale = 1 end
+	if not InterruptBarByScDB.hidden then InterruptBarByScDB.hidden = false end
+	if not InterruptBarByScDB.lock then InterruptBarByScDB.lock = false end
 	InterruptBar_CreateBar()
 	
-	SlashCmdList["InterruptBar"] = InterruptBar_Command
-	SLASH_InterruptBar1 = "/ib"
+	SlashCmdList["InterruptBarBySc"] = InterruptBar_Command
+	SLASH_InterruptBarBySc1 = "/ibsc"
 	
-	ChatFrame1:AddMessage("Interrupt Bar by Kollektiv. Type /ib for options.",0,1,0)
+	ChatFrame1:AddMessage("Interrupt Bar by Kollektiv mod By Satanic Crow. Type /ibsc for options.",0,1,0)
 end
 
 local eventhandler = {
