@@ -48,6 +48,7 @@ for k,v in ipairs(order) do order[k] = GetSpellInfo(v) end
 
 local frame
 local bar
+local btnTable = {}
 
 local GetTime = GetTime
 local ipairs = ipairs
@@ -56,6 +57,7 @@ local select = select
 local floor = floor
 local band = bit.band
 local GetSpellInfo = GetSpellInfo
+local startingX = -45
 
 local GROUP_UNITS = bit.bor(0x00000010, 0x00000400)
 
@@ -70,10 +72,13 @@ local function getsize()
 end
 
 local function InterruptBar_AddIcons()
-	local x = -45
+	local x = startingX
+
 	local lineCounter = 0
+	local iterator = 1
 	
 	for index,ability in ipairs(order) do
+		
 		if lineCounter+1 > InterruptBarByScDB.itemPerLine then
 		lineCounter = 0
 		x = -45
@@ -81,12 +86,16 @@ local function InterruptBar_AddIcons()
 		
 		local level = floor( (index-1) / InterruptBarByScDB.itemPerLine)
 		
-		local btn = CreateFrame("Frame",nil,bar)
+		local btn = CreateFrame("Frame","ibscButton"..iterator,bar)
 		btn:SetWidth(30)
 		btn:SetHeight(30)
 		
 		btn:SetPoint("CENTER",bar,"CENTER",x,level*-30)
 		btn:SetFrameStrata("LOW")
+		
+		btnTable[iterator] = btn
+		iterator = iterator + 1
+		-- print("added iterator: "..btn:GetName())
 		
 		local cd = CreateFrame("Cooldown",nil,btn)
 		cd.noomnicc = true
@@ -115,6 +124,29 @@ local function InterruptBar_AddIcons()
 		x = x + 30
 		lineCounter = lineCounter + 1
 	end
+end
+
+
+local function InterruptBar_UpdateItemsPerLine(itemNumber)
+	local x = startingX
+	local lineCounter = 0
+	
+	for index, btn in ipairs (btnTable) do
+		if lineCounter+1 > itemNumber then
+			lineCounter = 0
+			x = -45
+		end
+		
+		local level = floor( (index-1) / InterruptBarByScDB.itemPerLine)
+		
+		btn:ClearAllPoints()
+		btn:SetPoint("CENTER",bar,"CENTER",x,level*-30)
+		
+		x = x + 30
+		lineCounter = lineCounter + 1
+	end
+	
+
 end
 
 local function InterruptBar_SavePosition()
@@ -150,11 +182,6 @@ local function InterruptBar_UpdateBar()
 	end
 end
 
-local function InterruptBar_UpdateItemsPerLine()
-	InterruptBar_AddIcons()
-	ChatFrame1:AddMessage("Interruptbar - remember to reload the UI after changing the number of items per line",255,0,0) 
-end
-
 local function InterruptBar_CreateBar()
 	bar = CreateFrame("Frame", nil, UIParent)
 	bar:SetMovable(true)
@@ -169,6 +196,7 @@ local function InterruptBar_CreateBar()
 	InterruptBar_UpdateBar()
 	InterruptBar_LoadPosition()
 end
+
 
 local function InterruptBar_UpdateText(text,cooldown)
 	if cooldown > 99 then
@@ -289,7 +317,7 @@ end
 local cmdfuncs = {
 	scale = function(v) InterruptBarByScDB.scale = v; InterruptBar_UpdateBar() end,
 	hidden = function() InterruptBarByScDB.hidden = not InterruptBarByScDB.hidden; InterruptBar_UpdateBar() end,
-	itemPerLine = function(v)  InterruptBarByScDB.itemPerLine = v; InterruptBar_UpdateItemsPerLine() end,
+	itemPerLine = function(v)  InterruptBarByScDB.itemPerLine = v; InterruptBar_UpdateItemsPerLine(v) end,
 	lock = function() InterruptBarByScDB.lock = not InterruptBarByScDB.lock; InterruptBar_UpdateBar() end,
 	reset = function() InterruptBar_Reset() end,
 	test = function() InterruptBar_Test() end,
