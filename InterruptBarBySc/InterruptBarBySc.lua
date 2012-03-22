@@ -2,7 +2,7 @@
 -- Interrupt Bar by Kollektiv
 ----------------------------------------------------
 
-InterruptBarByScDB = InterruptBarByScDB or { scale = 1, hidden = false, lock = false, itemPerLine = 4}
+InterruptBarByScDB = InterruptBarByScDB or { scale = 1, hidden = false, lock = false, itemPerLine = 4, hOff = 0, vOff = 0}
 local abilities = {}
 local order
 local band = bit.band
@@ -71,6 +71,35 @@ local function getsize()
 	end
 end
 
+local function InterruptBar_UpdateItemsPosition(itemNumber, hOff, vOff)
+	local x = startingX
+	local lineCounter = 0
+	local iterator = 0
+	local y = 0
+	
+	for index, btn in ipairs (btnTable) do
+		-- reset the x position
+		if lineCounter+1 > itemNumber then
+			lineCounter = 0
+			x = -45
+		end
+		local level = floor( (index-1) / itemNumber)
+		
+		if iterator < itemNumber then
+			y = level *(-30)
+		else
+			y = level * (-30 - vOff)
+		end
+	
+		btn:ClearAllPoints()
+		btn:SetPoint("CENTER",bar,"CENTER",x,y)
+		
+		x = x + 30 + hOff
+		lineCounter = lineCounter + 1
+		iterator = iterator + 1
+	end
+end
+
 local function InterruptBar_AddIcons()
 	local x = startingX
 
@@ -90,12 +119,11 @@ local function InterruptBar_AddIcons()
 		btn:SetWidth(30)
 		btn:SetHeight(30)
 		
-		btn:SetPoint("CENTER",bar,"CENTER",x,level*-30)
+		-- btn:SetPoint("CENTER",bar,"CENTER",x,level*-30)
 		btn:SetFrameStrata("LOW")
 		
 		btnTable[iterator] = btn
 		iterator = iterator + 1
-		-- print("added iterator: "..btn:GetName())
 		
 		local cd = CreateFrame("Cooldown",nil,btn)
 		cd.noomnicc = true
@@ -125,30 +153,9 @@ local function InterruptBar_AddIcons()
 		x = x + 30
 		lineCounter = lineCounter + 1
 	end
+	InterruptBar_UpdateItemsPosition(InterruptBarByScDB.itemPerLine, InterruptBarByScDB.hOff, InterruptBarByScDB.vOff)
 end
 
-
-local function InterruptBar_UpdateItemsPerLine(itemNumber)
-	local x = startingX
-	local lineCounter = 0
-	
-	for index, btn in ipairs (btnTable) do
-		if lineCounter+1 > itemNumber then
-			lineCounter = 0
-			x = -45
-		end
-		
-		local level = floor( (index-1) / InterruptBarByScDB.itemPerLine)
-		
-		btn:ClearAllPoints()
-		btn:SetPoint("CENTER",bar,"CENTER",x,level*-30)
-		
-		x = x + 30
-		lineCounter = lineCounter + 1
-	end
-	
-
-end
 
 local function InterruptBar_SavePosition()
 	local point, _, relativePoint, xOfs, yOfs = bar:GetPoint()
@@ -304,7 +311,7 @@ local function InterruptBar_PLAYER_ENTERING_WORLD(self)
 end
 
 local function InterruptBar_Reset()
-	InterruptBarByScDB = { scale = 1, hidden = false, lock = false, itemPerLine = 4}
+	InterruptBarByScDB = { scale = 1, hidden = false, lock = false, itemPerLine = 4, hOff = 0, vOff = 0}
 	InterruptBar_UpdateBar()
 	InterruptBar_LoadPosition()
 end
@@ -315,10 +322,14 @@ local function InterruptBar_Test()
 	end
 end
 
+
+
 local cmdfuncs = {
 	scale = function(v) InterruptBarByScDB.scale = v; InterruptBar_UpdateBar() end,
 	hidden = function() InterruptBarByScDB.hidden = not InterruptBarByScDB.hidden; InterruptBar_UpdateBar() end,
-	itemPerLine = function(v)  InterruptBarByScDB.itemPerLine = v; InterruptBar_UpdateItemsPerLine(v) end,
+	itemPerLine = function(v)  InterruptBarByScDB.itemPerLine = v; InterruptBar_UpdateItemsPosition(v,InterruptBarByScDB.hOff,InterruptBarByScDB.vOff) end,
+	hOff = function(v)  InterruptBarByScDB.hOff = v; InterruptBar_UpdateItemsPosition(InterruptBarByScDB.itemPerLine,v,InterruptBarByScDB.vOff) end,
+	vOff = function(v)  InterruptBarByScDB.vOff = v; InterruptBar_UpdateItemsPosition(InterruptBarByScDB.itemPerLine,InterruptBarByScDB.hOff,v) end,
 	lock = function() InterruptBarByScDB.lock = not InterruptBarByScDB.lock; InterruptBar_UpdateBar() end,
 	reset = function() InterruptBar_Reset() end,
 	test = function() InterruptBar_Test() end,
@@ -340,6 +351,8 @@ function InterruptBar_Command(cmd)
   	ChatFrame1:AddMessage("InterruptBar Options | /ibsc <option>",255,0,0) 
   	ChatFrame1:AddMessage("-- scale <number> | value: " .. InterruptBarByScDB.scale,255,255,255)
 	ChatFrame1:AddMessage("-- itemPerLine <integer> | value: " .. InterruptBarByScDB.itemPerLine,255,255,255)
+	ChatFrame1:AddMessage("-- hOff <integer> | value: " .. InterruptBarByScDB.hOff,255,255,255)
+	ChatFrame1:AddMessage("-- vOff  <integer> | value: " .. InterruptBarByScDB.vOff,255,255,255)
   	ChatFrame1:AddMessage("-- hidden (toggle) | value: " .. tostring(InterruptBarByScDB.hidden),255,255,255)
   	ChatFrame1:AddMessage("-- lock (toggle) | value: " .. tostring(InterruptBarByScDB.lock),255,255,255)
   	ChatFrame1:AddMessage("-- test (execute)",255,255,255)
