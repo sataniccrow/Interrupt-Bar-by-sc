@@ -366,6 +366,8 @@ local function InterruptBar_OnLoad(self)
 	if not InterruptBarByScDB.scale then InterruptBarByScDB.scale = 1 end
 	if not InterruptBarByScDB.hidden then InterruptBarByScDB.hidden = false end
 	if not InterruptBarByScDB.lock then InterruptBarByScDB.lock = false end
+	if not InterruptBarByScDB.hOff then InterruptBarByScDB.hOff = 0 end
+	if not InterruptBarByScDB.vOff then InterruptBarByScDB.vOff = 0 end
 	InterruptBar_CreateBar()
 	
 	SlashCmdList["InterruptBarBySc"] = InterruptBar_Command
