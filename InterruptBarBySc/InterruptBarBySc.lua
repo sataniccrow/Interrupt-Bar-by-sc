@@ -112,7 +112,8 @@ local function InterruptBar_AddIcons()
 		local text = cd:CreateFontString(nil,"ARTWORK")
 		text:SetFont(STANDARD_TEXT_FONT,fontSize,"OUTLINE")
 		text:SetTextColor(1,1,0,1)
-		text:SetPoint("LEFT",btn,"LEFT",0,0)
+		text:SetPoint("CENTER",btn,"CENTER",0,0)
+		text:SetJustifyH("CENTER")
 		
 		btn.texture = texture
 		btn.text = text
